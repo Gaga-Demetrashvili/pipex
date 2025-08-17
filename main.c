@@ -6,9 +6,20 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:03:38 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/17 20:41:32 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/17 20:48:40 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// pid_t pid = fork();
+// if (pid < 0)
+//     perror("fork failed");
+// else if (pid == 0) {
+//     // Child logic
+//     execve(cmd_path, cmd_args, envp);
+// } else {
+//     // Parent logic
+//     waitpid(pid, NULL, 0); // wait for child
+// }
 
 #include "pipex.h"
 
