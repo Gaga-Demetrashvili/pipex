@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:03:38 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/17 15:03:14 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/17 20:41:32 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,23 @@ int	open_file(char *file_name, int is_rdonly)
 	return (fd);
 }
 
-int	create_pipe(int infile_fd, int outfile_fd)
+int	run_pipex(void)
 {
-	int	pipefd[2];
+	int		pipefd[2];
+	pid_t	pid;
 
 	if (pipe(pipefd) == -1)
 	{
 		perror("pipe error");
 		return (1);
 	}
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork failed");
+		return (1);
+	}
+	return (0);
 }
 
 // int	main(int argc, char **argv, char **envp)
@@ -61,6 +69,7 @@ int	main(int argc, char **argv)
 	outfile_fd = open_file(argv[4], 0);
 	if (outfile_fd < 0)
 		return (1);
-	create_pipe(infile_fd, outfile_fd);
+	if (run_pipex() < 0)
+		return (1);
 	return (0);
 }
