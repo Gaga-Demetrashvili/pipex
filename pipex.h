@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 11:13:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/17 14:19:48 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/18 20:57:01 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,3 +15,5 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
