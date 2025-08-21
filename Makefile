@@ -8,7 +8,8 @@ FT_PRINTF_DIR = ft_printf
 FT_PRINTF_MAKE = make -C $(FT_PRINTF_DIR)
 FT_PRINTF_A = $(FT_PRINTF_DIR)/libftprintf.a
 
-SRC = main.c
+SRC = main.c\
+	pipex_utils.c
 
 OBJ = $(SRC:.c=.o)
 
