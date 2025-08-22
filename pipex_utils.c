@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:34:58 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/21 22:00:58 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/22 22:26:33 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int	open_file(char *file_name, int is_rdonly)
 	return (fd);
 }
 
-t_model *create_and_init_model(char **argv, int *pipefd, char **envp)
+t_model	*create_and_init_model(char **argv, int *pipefd, char **envp)
 {
-	t_model *model;
+	t_model	*model;
 
 	model = (t_model *)malloc(sizeof(t_model));
 	if (!model)
@@ -62,18 +62,18 @@ t_model *create_and_init_model(char **argv, int *pipefd, char **envp)
 	model->read_end_of_pipe = pipefd[0];
 	model->write_end_of_pipe = pipefd[1];
 	model->envp = envp;
-
+	model->paths = NULL;
 	return (model);
 }
 
-void free_arr(char **arr)
+void	free_arr(char **arr)
 {
 	int i;
 
 	i = 0;
 	while (arr[i])
 	{
-		free(arr[i])
+		free(arr[i]);
 		i++;
 	}
 	free(arr);
