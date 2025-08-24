@@ -9,7 +9,8 @@ FT_PRINTF_MAKE = make -C $(FT_PRINTF_DIR)
 FT_PRINTF_A = $(FT_PRINTF_DIR)/libftprintf.a
 
 SRC = main.c\
-	pipex_utils.c
+	pipex_utils.c\
+	error_handling.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -40,3 +41,26 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re bonus
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 11:13:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/22 22:26:43 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/24 11:55:37 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,22 @@ typedef struct s_model
 {
 	char	*infile_name;
 	char	*outfile_name;
-	char	*cmd1;
-	char	*cmd2;
+	char	**cmdv1;
+	char	**cmdv2;
 	int		read_end_of_pipe;
 	int		write_end_of_pipe;
 	char	**envp;
 	char	**paths;
 }			t_model;
 
-// Pipex utils
-int			open_file(char *file_name, int is_rdonly);
-int			validations(int argc, int pipe_res);
-t_model		*create_and_init_model(char **argv, int *pipefd, char **envp);
+// error_handling
+void		validations(int argc, char **argv, int pipe_res);
+void		ft_error_exit(char *str, char *str2, t_model *model, int status);
 void		free_arr(char **arr);
+void		clean_up_resources(t_model *model);
+
+// Pipex utils
+char		**paths_arr(char **envp);
+char		*find_path(char **cmdv, char **envp);
+int			open_file(char *file_name, t_model *model, int is_rdonly);
+t_model		*create_and_init_model(char **argv, int *pipefd, char **envp);
