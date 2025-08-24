@@ -1,48 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   find_path_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/21 19:34:58 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/24 00:01:09 by gdemetra         ###   ########.fr       */
+/*   Created: 2025/08/24 21:45:04 by gdemetra          #+#    #+#             */
+/*   Updated: 2025/08/24 22:19:00 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
-int	open_file(char *file_name, t_model *model, int is_rdonly)
-{
-	int	fd;
-
-	if (is_rdonly)
-		fd = open(file_name, O_RDONLY);
-	else
-		fd = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (fd < 0)
-		ft_error_exit(file_name, ": No such file or directory\n", model, 1);
-	return (fd);
-}
-
-t_model	*create_and_init_model(char **argv, int *pipefd, char **envp)
-{
-	t_model	*model;
-
-	model = (t_model *)malloc(sizeof(t_model));
-	if (!model)
-		return (NULL);
-	model->infile_name = argv[1];
-	model->cmdv1 = ft_split(argv[2], ' ');
-	model->cmdv2 = ft_split(argv[3], ' ');
-	model->outfile_name = argv[4];
-	model->read_end_of_pipe = pipefd[0];
-	model->write_end_of_pipe = pipefd[1];
-	model->envp = envp;
-	return (model);
-}
-
-char	**paths_arr(char **envp)
+static char	**paths_arr(char **envp)
 {
 	int		i;
 	char	**paths;

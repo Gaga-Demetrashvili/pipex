@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:03:38 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/24 13:51:44 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/24 22:41:49 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
-void	execute_cmd(char **cmdv, char **envp, t_model *model)
+void	execute_cmd(char **cmdv, char **envp, t_model model)
 {
 	int		i;
 	char	*path;
@@ -30,20 +30,20 @@ void	execute_cmd(char **cmdv, char **envp, t_model *model)
 	}
 }
 
-void	child_process_logic(t_model *model)
+void	child_process_logic(t_model model, int *pipefd)
 {
 	int	infile_fd;
 
-	infile_fd = open_file(model->infile_name, model, 1);
-	close(model->read_end_of_pipe);
+	infile_fd = open_file(model.infile_name, model, 1);
+	close(pipefd[0]);
 	dup2(infile_fd, STDIN_FILENO);
 	close(infile_fd);
-	dup2(model->write_end_of_pipe, STDOUT_FILENO);
-	close(model->write_end_of_pipe);
-	execute_cmd(model->cmdv1, model->envp, model);
+	dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
+	execute_cmd(model.cmdv_arr[0], model.envp, model);
 }
 
-int	parent_process_logic(int pid, t_model *model)
+int	parent_process_logic(int pid, t_model model, int *pipefd)
 {
 	int	child2_pid;
 	int	status;
@@ -53,17 +53,17 @@ int	parent_process_logic(int pid, t_model *model)
 	child2_pid = fork();
 	if (child2_pid == 0)
 	{
-		outfile_fd = open_file(model->outfile_name, model, 0);
+		outfile_fd = open_file(model.outfile_name, model, 0);
 		waitpid(pid, &status, 0);
-		close(model->write_end_of_pipe);
-		dup2(model->read_end_of_pipe, STDIN_FILENO);
+		close(pipefd[1]);
+		dup2(pipefd[0], STDIN_FILENO);
 		dup2(outfile_fd, STDOUT_FILENO);
 		close(outfile_fd);
-		close(model->read_end_of_pipe);
-		execute_cmd(model->cmdv2, model->envp, model);
+		close(pipefd[0]);
+		execute_cmd(model.cmdv_arr[1], model.envp, model);
 	}
-	close(model->read_end_of_pipe);
-	close(model->write_end_of_pipe);
+	close(pipefd[0]);
+	close(pipefd[1]);
 	waitpid(child2_pid, &status, 0);
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
@@ -74,13 +74,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	t_model	*model;
+	t_model	model;
 	int		status;
 
 	validations(argc, argv, pipe(pipefd));
-	model = create_and_init_model(argv, pipefd, envp);
-	if (!model)
-		return (1);
+	model = create_and_init_model(argv, argc, envp);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -90,9 +88,9 @@ int	main(int argc, char **argv, char **envp)
 	}
 	status = 0;
 	if (pid == 0)
-		child_process_logic(model);
+		child_process_logic(model, pipefd);
 	else
-		status = parent_process_logic(pid, model);
+		status = parent_process_logic(pid, model, pipefd);
 	clean_up_resources(model);
 	return (status);
 }
