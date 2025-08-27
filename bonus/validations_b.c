@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 18:41:33 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 21:33:16 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/27 22:13:30 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	validations_b(int argc, char **argv)
 	i = 2;
 	while (i < argc)
 	{
-		if (ft_strlen(argv[i]) == 0 || argv[i][0] == ' ')
+		if (is_empty_or_whitespace(argv[i]))
 		{
 			ft_printf("pipex: cmd is empty or whitespace");
 			exit(1);

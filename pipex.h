@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 11:13:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/26 22:29:44 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/27 22:12:09 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void		execute_cmd(char **cmdv, char **envp, t_model model);
 void		ft_error_exit(char *str, char *str2, t_model model, int status);
 void		free_arr(char **arr);
 void		clean_up_resources(t_model model);
+int			is_empty_or_whitespace(char *str);
 
 // find_path_utils
 char		*find_path(char **cmdv, char **envp);
