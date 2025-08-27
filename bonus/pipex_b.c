@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 18:39:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 21:14:55 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/27 22:53:08 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@ void	read_write_logic(int i, t_model model, int pipe_wr_end_fd, int prev_fd)
 	int	outfile_fd;
 	int	infile_fd;
 
-	if (i == model.cmd_c - 1)
-	{
-		outfile_fd = open_file(model.outfile_name, model, 0);
-		dup2(outfile_fd, STDOUT_FILENO);
-		close(outfile_fd);
-	}
-	else
-		dup2(pipe_wr_end_fd, STDOUT_FILENO);
 	if (i == 0)
 	{
 		infile_fd = open_file(model.infile_name, model, 1);
@@ -33,6 +25,14 @@ void	read_write_logic(int i, t_model model, int pipe_wr_end_fd, int prev_fd)
 	}
 	else
 		dup2(prev_fd, STDIN_FILENO);
+	if (i == model.cmd_c - 1)
+	{
+		outfile_fd = open_file(model.outfile_name, model, 0);
+		dup2(outfile_fd, STDOUT_FILENO);
+		close(outfile_fd);
+	}
+	else
+		dup2(pipe_wr_end_fd, STDOUT_FILENO);
 }
 
 void	child_proccess_logic(int i, t_model model, int *pipefd, int prev_fd)
