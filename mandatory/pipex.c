@@ -6,29 +6,11 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:03:38 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/24 22:41:49 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/26 22:10:06 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
-
-void	execute_cmd(char **cmdv, char **envp, t_model model)
-{
-	int		i;
-	char	*path;
-
-	i = 0;
-	path = find_path(cmdv, envp);
-	if (!path)
-		ft_error_exit(cmdv[0], ": command not found\n", model, 127);
-	if (execve(path, cmdv, envp) == -1)
-	{
-		perror("execv failed");
-		free(path);
-		clean_up_resources(model);
-		exit(1);
-	}
-}
 
 void	child_process_logic(t_model model, int *pipefd)
 {

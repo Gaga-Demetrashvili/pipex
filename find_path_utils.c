@@ -6,11 +6,11 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/24 21:45:04 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/24 22:19:00 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/26 22:30:55 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "pipex.h"
 
 static char	**paths_arr(char **envp)
 {

@@ -6,11 +6,11 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 22:51:33 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/24 22:37:56 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/26 19:07:51 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "pipex.h"
 
 void	free_arr(char **arr)
 {
@@ -25,7 +25,7 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-void	free_cmdv_arr(char ***arr)
+static void	free_cmdv_arr(char ***arr)
 {
 	int	i;
 

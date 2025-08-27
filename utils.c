@@ -6,32 +6,11 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:34:58 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/24 22:51:22 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/26 22:09:25 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
-
-void	validations(int argc, char **argv, int pipe_res)
-{
-	if (argc != 5)
-	{
-		ft_printf("pipex: program should take 4 args\n");
-		exit(1);
-	}
-	if (ft_strlen(argv[2]) == 0 || argv[2][0] == ' ' || ft_strlen(argv[3]) == 0
-		|| argv[3][0] == ' ' || ft_strlen(argv[1]) == 0
-		|| ft_strlen(argv[4]) == 0)
-	{
-		ft_printf("pipex: cmd is empty or has whitespace\n");
-		exit(1);
-	}
-	if (pipe_res == -1)
-	{
-		perror("pipex: pipe creation error\n");
-		exit(1);
-	}
-}
+#include "pipex.h"
 
 int	open_file(char *file_name, t_model model, int is_rdonly)
 {
@@ -77,19 +56,36 @@ t_model	create_and_init_model(char **argv, int argc, char **envp)
 	t_model	model;
 	char	**cmds_arr;
 	char	***cmdv_arr;
-	int		cmdc;
 
-	cmdc = argc - 3;
-	cmds_arr = (char **)malloc(sizeof(char *) * (cmdc + 1));
+	model.cmd_c = argc - 3;
+	cmds_arr = (char **)malloc(sizeof(char *) * (model.cmd_c + 1));
 	if (cmds_arr)
-		init_cmds_arr(argv, cmdc, cmds_arr);
-	cmdv_arr = (char ***)malloc(sizeof(char **) * (cmdc + 1));
+		init_cmds_arr(argv, model.cmd_c, cmds_arr);
+	cmdv_arr = (char ***)malloc(sizeof(char **) * (model.cmd_c + 1));
 	if (cmdv_arr)
-		init_cmdv_arr(cmdv_arr, cmds_arr, cmdc);
+		init_cmdv_arr(cmdv_arr, cmds_arr, model.cmd_c);
 	model.cmds_arr = cmds_arr;
 	model.cmdv_arr = cmdv_arr;
 	model.infile_name = argv[1];
 	model.outfile_name = argv[argc - 1];
 	model.envp = envp;
 	return (model);
+}
+
+void	execute_cmd(char **cmdv, char **envp, t_model model)
+{
+	int		i;
+	char	*path;
+
+	i = 0;
+	path = find_path(cmdv, envp);
+	if (!path)
+		ft_error_exit(cmdv[0], ": command not found\n", model, 127);
+	if (execve(path, cmdv, envp) == -1)
+	{
+		perror("execv failed");
+		free(path);
+		clean_up_resources(model);
+		exit(1);
+	}
 }

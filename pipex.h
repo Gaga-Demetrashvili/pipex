@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 11:13:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/24 22:48:48 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/26 22:29:44 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,24 @@ typedef struct s_model
 	char	***cmdv_arr;
 	char	**envp;
 	char	**paths;
+	int		cmd_c;
 }			t_model;
+
+// validations
+void		validations(int argc, char **argv, int pipe_res);
+
+// validations_b
+void		validations_b(int argc, char **argv);
+
+// utils
+int			open_file(char *file_name, t_model model, int is_rdonly);
+t_model		create_and_init_model(char **argv, int argc, char **envp);
+void		execute_cmd(char **cmdv, char **envp, t_model model);
 
 // cleanup
 void		ft_error_exit(char *str, char *str2, t_model model, int status);
 void		free_arr(char **arr);
 void		clean_up_resources(t_model model);
-
-// utils
-int			open_file(char *file_name, t_model model, int is_rdonly);
-t_model		create_and_init_model(char **argv, int argc, char **envp);
-void		validations(int argc, char **argv, int pipe_res);
 
 // find_path_utils
 char		*find_path(char **cmdv, char **envp);

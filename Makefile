@@ -9,14 +9,23 @@ FT_PRINTF_MAKE = make -C $(FT_PRINTF_DIR)
 FT_PRINTF_A = $(FT_PRINTF_DIR)/libftprintf.a
 
 SRC = mandatory/pipex.c\
-	mandatory/utils.c\
-	mandatory/cleanup.c\
-	mandatory/find_path_utils.c
+	mandatory/validations.c\
+	cleanup.c\
+	utils.c\
+	find_path_utils.c
+
+SRC_B = bonus/pipex_b.c\
+	bonus/validations_b.c\
+	cleanup.c\
+	utils.c\
+	find_path_utils.c
 
 OBJ = $(SRC:.c=.o)
 
+OBJ_B = $(SRC_B:.c=.o)
+
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 all: $(LIBFT_A) $(FT_PRINTF_A) $(NAME)
 
@@ -29,8 +38,13 @@ $(LIBFT_A):
 $(FT_PRINTF_A):
 	$(FT_PRINTF_MAKE)
 
+$(OBJ_B): $(LIBFT_A) $(FT_PRINTF_A)
+
+bonus: $(OBJ_B)
+	$(CC) $(CFLAGS) $(OBJ_B) $(LIBFT_A) $(FT_PRINTF_A) -o $(NAME)
+
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(OBJ_B)
 	make clean -C $(LIBFT_DIR)
 	make clean -C $(FT_PRINTF_DIR)
 
@@ -42,40 +56,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re bonus
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
