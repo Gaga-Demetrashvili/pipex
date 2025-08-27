@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 22:51:33 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 22:11:33 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/27 22:28:00 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,15 @@ void	ft_error_exit(char *str, char *str2, t_model model, int status)
 	int	i;
 
 	i = 0;
-	if (str2 == NULL)
+	if (str == NULL)
 	{
 		write(2, "pipex: ", 7);
-		write(2, str, ft_strlen(str2));
+		write(2, str2, ft_strlen(str2));
 		exit(1);
 	}
 	write(2, "pipex: ", 7);
 	write(2, str, ft_strlen(str));
 	write(2, str2, ft_strlen(str2));
-	write(2, "\n", 1);
 	clean_up_resources(model);
 	exit(status);
 }

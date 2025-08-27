@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:34:58 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 22:10:55 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/27 22:32:00 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	open_file(char *file_name, t_model model, int is_rdonly)
 	else
 		fd = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
-		ft_error_exit("no such file or directory: ", file_name, model, 1);
+		ft_error_exit(file_name, ": No such file or directory\n", model, 1);
 	return (fd);
 }
 
@@ -80,7 +80,7 @@ void	execute_cmd(char **cmdv, char **envp, t_model model)
 	i = 0;
 	path = find_path(cmdv, envp);
 	if (!path)
-		ft_error_exit("command not found: ", cmdv[0], model, 127);
+		ft_error_exit(cmdv[0], ": command not found\n", model, 127);
 	if (execve(path, cmdv, envp) == -1)
 	{
 		perror("execv failed");
