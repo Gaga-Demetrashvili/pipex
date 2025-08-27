@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 18:39:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 22:53:08 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/27 23:18:21 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	child_proccess_logic(int i, t_model model, int *pipefd, int prev_fd)
 	close(pipefd[0]);
 	close(pipefd[1]);
 	execute_cmd(model.cmdv_arr[i], model.envp, model);
-	perror("execve failed");
-	exit(1);
 }
 
 void	loop_logic(t_model model, int *last_pid)
