@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 18:39:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/28 20:28:56 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/28 23:25:55 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,12 @@ void	heredoc_logic(char *limiter)
 
 	fd = 1;
 	limiter_with_n = ft_strjoin(limiter, "\n");
+	ft_printf("> ");
 	line = get_next_line(fd);
 	while (line && ft_strcmp(line, limiter_with_n))
 	{
-		ft_printf("line - %s | limiter %s", line, limiter);
 		free(line);
+		ft_printf("> ");
 		line = get_next_line(fd);
 	}
 	free(limiter_with_n);
@@ -125,9 +126,9 @@ int	main(int argc, char **argv, char **envp)
 	validations_b(argc, argv);
 	if (!ft_strcmp(argv[1], "here_doc"))
 	{
-		ft_printf("heredoc_logic start!");
+		ft_printf("heredoc_logic start!\n");
 		heredoc_logic(argv[2]);
-		ft_printf("heredoc_logic end!");
+		ft_printf("heredoc_logic end!\n");
 		exit(0);
 	}
 	model = create_and_init_model(argv, argc, envp);
