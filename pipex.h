@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 11:13:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 22:12:09 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/28 19:36:01 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void		validations(int argc, char **argv, int pipe_res);
 
 // validations_b
 void		validations_b(int argc, char **argv);
+int			ft_strcmp(const char *s1, const char *s2);
 
 // utils
 int			open_file(char *file_name, t_model model, int is_rdonly);

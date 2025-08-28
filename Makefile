@@ -16,6 +16,8 @@ SRC = mandatory/pipex.c\
 
 SRC_B = bonus/pipex_b.c\
 	bonus/validations_b.c\
+	bonus/get_next_line.c\
+	bonus/get_next_line_utils.c\
 	cleanup.c\
 	utils.c\
 	find_path_utils.c
@@ -29,8 +31,11 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 all: $(LIBFT_A) $(FT_PRINTF_A) $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_A) $(FT_PRINTF_A) -o $(NAME)
+# $(NAME): $(OBJ)
+# 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_A) $(FT_PRINTF_A) -o $(NAME)
+
+$(NAME): $(OBJ_B)
+	$(CC) $(CFLAGS) $(OBJ_B) $(LIBFT_A) $(FT_PRINTF_A) -o $(NAME)
 
 $(LIBFT_A):
 	$(LIBFT_MAKE)
@@ -56,3 +61,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re bonus
+
+

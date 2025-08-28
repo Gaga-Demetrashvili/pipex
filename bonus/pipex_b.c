@@ -6,10 +6,11 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 18:39:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 23:18:21 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/28 20:28:56 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../get_next_line.h"
 #include "../pipex.h"
 
 void	read_write_logic(int i, t_model model, int pipe_wr_end_fd, int prev_fd)
@@ -98,12 +99,37 @@ int	main_logic(t_model model)
 	return (last_exit);
 }
 
+void	heredoc_logic(char *limiter)
+{
+	int		fd;
+	char	*line;
+	char	*limiter_with_n;
+
+	fd = 1;
+	limiter_with_n = ft_strjoin(limiter, "\n");
+	line = get_next_line(fd);
+	while (line && ft_strcmp(line, limiter_with_n))
+	{
+		ft_printf("line - %s | limiter %s", line, limiter);
+		free(line);
+		line = get_next_line(fd);
+	}
+	free(limiter_with_n);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_model	model;
 	int		status;
 
 	validations_b(argc, argv);
+	if (!ft_strcmp(argv[1], "here_doc"))
+	{
+		ft_printf("heredoc_logic start!");
+		heredoc_logic(argv[2]);
+		ft_printf("heredoc_logic end!");
+		exit(0);
+	}
 	model = create_and_init_model(argv, argc, envp);
 	status = main_logic(model);
 	clean_up_resources(model);
