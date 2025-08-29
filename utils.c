@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:34:58 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 22:32:00 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/29 21:13:04 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,20 @@ int	open_file(char *file_name, t_model model, int is_rdonly)
 	return (fd);
 }
 
-static void	init_cmds_arr(char **argv, int cmdc, char **cmds_arr)
+static void	init_cmds_arr(char **argv, int cmdc, char **cmds_arr,
+		int is_heredoc)
 {
 	int	i;
+	int	offset;
 
 	i = 0;
+	if (is_heredoc)
+		offset = 3;
+	else
+		offset = 2;
 	while (i < cmdc)
 	{
-		cmds_arr[i] = ft_strdup(argv[i + 2]);
+		cmds_arr[i] = ft_strdup(argv[i + offset]);
 		i++;
 	}
 	cmds_arr[i] = NULL;
@@ -51,22 +57,31 @@ static void	init_cmdv_arr(char ***cmdv_arr, char **cmds_arr, int cmdc)
 	cmdv_arr[i] = NULL;
 }
 
-t_model	create_and_init_model(char **argv, int argc, char **envp)
+t_model	create_and_init_model(char **argv, int argc, char **envp,
+		int is_heredoc, char *heredoc_tmp_file_name)
 {
 	t_model	model;
 	char	**cmds_arr;
 	char	***cmdv_arr;
 
-	model.cmd_c = argc - 3;
+	if (is_heredoc)
+	{
+		model.cmd_c = argc - 4;
+		model.infile_name = heredoc_tmp_file_name;
+	}
+	else
+	{
+		model.cmd_c = argc - 3;
+		model.infile_name = argv[1];
+	}
 	cmds_arr = (char **)malloc(sizeof(char *) * (model.cmd_c + 1));
 	if (cmds_arr)
-		init_cmds_arr(argv, model.cmd_c, cmds_arr);
+		init_cmds_arr(argv, model.cmd_c, cmds_arr, is_heredoc);
 	cmdv_arr = (char ***)malloc(sizeof(char **) * (model.cmd_c + 1));
 	if (cmdv_arr)
 		init_cmdv_arr(cmdv_arr, cmds_arr, model.cmd_c);
 	model.cmds_arr = cmds_arr;
 	model.cmdv_arr = cmdv_arr;
-	model.infile_name = argv[1];
 	model.outfile_name = argv[argc - 1];
 	model.envp = envp;
 	return (model);

@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 11:13:44 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/28 19:36:01 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/29 21:15:54 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int			ft_strcmp(const char *s1, const char *s2);
 
 // utils
 int			open_file(char *file_name, t_model model, int is_rdonly);
-t_model		create_and_init_model(char **argv, int argc, char **envp);
+t_model		create_and_init_model(char **argv, int argc, char **envp,
+				int is_heredoc, char *heredoc_tmp_file_name);
 void		execute_cmd(char **cmdv, char **envp, t_model model);
 
 // cleanup
