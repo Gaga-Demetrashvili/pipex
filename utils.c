@@ -6,10 +6,11 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:34:58 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/29 21:13:04 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/29 22:23:40 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
 #include "pipex.h"
 
 int	open_file(char *file_name, t_model model, int is_rdonly)
@@ -23,68 +24,6 @@ int	open_file(char *file_name, t_model model, int is_rdonly)
 	if (fd < 0)
 		ft_error_exit(file_name, ": No such file or directory\n", model, 1);
 	return (fd);
-}
-
-static void	init_cmds_arr(char **argv, int cmdc, char **cmds_arr,
-		int is_heredoc)
-{
-	int	i;
-	int	offset;
-
-	i = 0;
-	if (is_heredoc)
-		offset = 3;
-	else
-		offset = 2;
-	while (i < cmdc)
-	{
-		cmds_arr[i] = ft_strdup(argv[i + offset]);
-		i++;
-	}
-	cmds_arr[i] = NULL;
-}
-
-static void	init_cmdv_arr(char ***cmdv_arr, char **cmds_arr, int cmdc)
-{
-	int	i;
-
-	i = 0;
-	while (i < cmdc)
-	{
-		cmdv_arr[i] = ft_split(cmds_arr[i], ' ');
-		i++;
-	}
-	cmdv_arr[i] = NULL;
-}
-
-t_model	create_and_init_model(char **argv, int argc, char **envp,
-		int is_heredoc, char *heredoc_tmp_file_name)
-{
-	t_model	model;
-	char	**cmds_arr;
-	char	***cmdv_arr;
-
-	if (is_heredoc)
-	{
-		model.cmd_c = argc - 4;
-		model.infile_name = heredoc_tmp_file_name;
-	}
-	else
-	{
-		model.cmd_c = argc - 3;
-		model.infile_name = argv[1];
-	}
-	cmds_arr = (char **)malloc(sizeof(char *) * (model.cmd_c + 1));
-	if (cmds_arr)
-		init_cmds_arr(argv, model.cmd_c, cmds_arr, is_heredoc);
-	cmdv_arr = (char ***)malloc(sizeof(char **) * (model.cmd_c + 1));
-	if (cmdv_arr)
-		init_cmdv_arr(cmdv_arr, cmds_arr, model.cmd_c);
-	model.cmds_arr = cmds_arr;
-	model.cmdv_arr = cmdv_arr;
-	model.outfile_name = argv[argc - 1];
-	model.envp = envp;
-	return (model);
 }
 
 void	execute_cmd(char **cmdv, char **envp, t_model model)
@@ -103,4 +42,51 @@ void	execute_cmd(char **cmdv, char **envp, t_model model)
 		clean_up_resources(model);
 		exit(1);
 	}
+}
+
+static char	**paths_arr(char **envp)
+{
+	int		i;
+	char	**paths;
+
+	i = 0;
+	paths = NULL;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			paths = ft_split(envp[i] + 5, ':');
+		i++;
+	}
+	if (!paths)
+		ft_printf("Error\nPATH env variable does not exist");
+	return (paths);
+}
+
+char	*find_path(char **cmdv, char **envp)
+{
+	int		i;
+	char	*path;
+	char	**paths;
+	char	*c;
+
+	i = 0;
+	paths = paths_arr(envp);
+	if (!paths)
+		return (NULL);
+	while (paths[i])
+	{
+		c = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(c, cmdv[0]);
+		free(c);
+		if (0 == access(path, X_OK))
+		{
+			free_arr(paths);
+			return (path);
+		}
+		else
+			free(path);
+		i++;
+	}
+	free_arr(paths);
+	return (NULL);
 }

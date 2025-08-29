@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/17 12:03:38 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/27 22:10:35 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/29 22:16:07 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,24 @@ int	parent_process_logic(int pid, t_model model, int *pipefd)
 	return (status);
 }
 
+static void	init_pr_args(int argc, char **argv, char **envp, t_pr_args *pr_args)
+{
+	pr_args->argc = argc;
+	pr_args->argv = argv;
+	pr_args->envp = envp;
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	int		pipefd[2];
-	pid_t	pid;
-	t_model	model;
-	int		status;
+	int			pipefd[2];
+	pid_t		pid;
+	t_model		model;
+	int			status;
+	t_pr_args	pr_args;
 
 	validations(argc, argv, pipe(pipefd));
-	model = create_and_init_model(argv, argc, envp);
+	init_pr_args(argc, argv, envp, &pr_args);
+	model = create_and_init_model(pr_args, 0, NULL);
 	pid = fork();
 	if (pid < 0)
 	{
