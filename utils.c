@@ -6,7 +6,7 @@
 /*   By: gdemetra <gdemetra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 19:34:58 by gdemetra          #+#    #+#             */
-/*   Updated: 2025/08/29 22:23:40 by gdemetra         ###   ########.fr       */
+/*   Updated: 2025/08/30 16:00:11 by gdemetra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	open_file(char *file_name, t_model model, int is_rdonly)
 	else
 		fd = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
-		ft_error_exit(file_name, ": No such file or directory\n", model, 1);
+		ft_error_exit(file_name, strerror(errno), model, 1);
 	return (fd);
 }
 
